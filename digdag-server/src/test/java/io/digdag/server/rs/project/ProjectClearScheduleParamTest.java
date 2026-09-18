@@ -1,9 +1,6 @@
 package io.digdag.server.rs.project;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ProjectClearScheduleParamTest {
     private final ProjectClearScheduleParam paramData1 = new ProjectClearScheduleParam(Arrays.asList("wf1", "wf2", "wf3"), false);
     private final ProjectClearScheduleParam paramData2 = new ProjectClearScheduleParam(Arrays.asList("wf1", "wf2"), true);

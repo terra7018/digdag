@@ -7,7 +7,7 @@ import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.spi.AuthenticatedUser;
 import io.digdag.spi.Authenticator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

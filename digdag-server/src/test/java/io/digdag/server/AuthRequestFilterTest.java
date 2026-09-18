@@ -7,11 +7,10 @@ import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.spi.AuthenticatedUser;
 import io.digdag.spi.Authenticator;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Response;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AuthRequestFilterTest
 {
     private static final ConfigFactory CONFIG_FACTORY = new ConfigFactory(DigdagClient.objectMapper());
@@ -36,10 +34,11 @@ public class AuthRequestFilterTest
 
     private AuthRequestFilter authRequestFilter;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         authRequestFilter = new AuthRequestFilter(authenticator, CONFIG_FACTORY);
     }
 
