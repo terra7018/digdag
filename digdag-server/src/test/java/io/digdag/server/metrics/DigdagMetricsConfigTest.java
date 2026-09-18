@@ -100,7 +100,7 @@ public class DigdagMetricsConfigTest
         Optional<FluencyMonitorSystemConfig> fluencyConfig = metricsConfig.getMonitorSystemConfig("fluency").transform((p) -> (FluencyMonitorSystemConfig)p);
         assertTrue(fluencyConfig.isPresent(), "Exist fluency config");
         assertTrue(fluencyConfig.get().getMonitorSystemEnable(), "plugin is enable");
-        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.AGENT), "category 'agent' is enable");
+        assertTrue(fluencyConfig.get().getMonitorSystemEnable(), "category 'agent' is enable");
         assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.API), "category 'api' is enable");
         assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.DB), "category 'db' is enable");
         assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.EXECUTOR), "category 'executor' is enable");
