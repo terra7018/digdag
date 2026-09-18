@@ -4,36 +4,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import com.google.common.io.Resources;
 import org.yaml.snakeyaml.error.YAMLException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class YamlConfigLoaderTest
 {
     YamlConfigLoader loader;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
         loader = new YamlConfigLoader();
     }
 
-    @Test(expected = YAMLException.class)
+    @Test
     public void verifyDuplicateKeysDisallowed()
             throws Exception
     {
-        loader.loadString("{\"a\":1, \"a\":2}");
+        assertThrows(YAMLException.class, () -> loader.loadString("{\"a\":1, \"a\":2}"));
     }
 
-    @Test(expected = YAMLException.class)
+    @Test
     public void verifyDuplicateKeysDisallowedWithParameterizedLoad()
             throws Exception
     {
         Path temp = Files.createTempFile("digdag-YamlConfigLoaderTest", ".yml");
         Files.write(temp, "{\"a\":1, \"a\":2}".getBytes(UTF_8));
-        loader.loadParameterizedFile(temp.toFile(), null);
+        assertThrows(YAMLException.class, () -> loader.loadParameterizedFile(temp.toFile(), null));
     }
 }

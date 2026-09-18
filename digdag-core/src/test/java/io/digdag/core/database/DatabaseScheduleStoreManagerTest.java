@@ -24,11 +24,9 @@ import io.digdag.core.schedule.StoredSchedule;
 import io.digdag.spi.AccountRouting;
 import io.digdag.spi.ScheduleTime;
 import io.digdag.spi.Scheduler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.skife.jdbi.v2.Handle;
 
 import java.time.Duration;
@@ -53,13 +51,12 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DatabaseScheduleStoreManagerTest
 {
     private DatabaseFactory factory;
@@ -73,7 +70,7 @@ public class DatabaseScheduleStoreManagerTest
     private AccountRouting accountRoutingInclude0; // account_routing.include = 0;
     private AccountRouting accountRoutingExclude0; // account_routing.exclude = 0;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -99,7 +96,7 @@ public class DatabaseScheduleStoreManagerTest
         this.accountRoutingExclude0 = DefaultAccountRoutingFactory.fromConfig(cf1, Optional.of(AccountRouting.ModuleType.SCHEDULER.toString()));
     }
 
-    @After
+    @AfterEach
     public void destroy()
     {
         factory.close();

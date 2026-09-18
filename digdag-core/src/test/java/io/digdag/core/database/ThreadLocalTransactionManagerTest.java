@@ -6,25 +6,21 @@ import io.digdag.core.repository.ResourceNotFoundException;
 import io.digdag.core.repository.StoredProject;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ThreadLocalTransactionManagerTest
 {
     private DatabaseFactory factory;
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -35,14 +31,14 @@ public class ThreadLocalTransactionManagerTest
     public void nestedTransactionIsNotAllowed()
             throws Exception
     {
-        exception.expectMessage(containsString("Nested transaction is not allowed"));
-        exception.expect(IllegalStateException.class);
-        factory.get().begin(() -> {
-            return factory.get().begin(() -> {
-                fail();
-                return null;
-            });
-        });
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+                factory.get().begin(() -> {
+                    return factory.get().begin(() -> {
+                        fail();
+                        return null;
+                    });
+                }));
+        assertThat(ex.getMessage(), containsString("Nested transaction is not allowed"));
     }
 
     @Test

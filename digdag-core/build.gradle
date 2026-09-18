@@ -49,4 +49,13 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5.5' // depends on aws-java-sdk 1.11.545
 
     testCompile project(path: ':digdag-client', configuration: 'testArtifacts')
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+}
+
+test {
+    useJUnitPlatform()
 }

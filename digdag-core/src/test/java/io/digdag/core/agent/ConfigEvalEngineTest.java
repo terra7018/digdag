@@ -4,10 +4,8 @@ package io.digdag.core.agent;
 import io.digdag.client.config.Config;
 import io.digdag.spi.TemplateException;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,17 +15,15 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static io.digdag.core.workflow.WorkflowTestingUtils.loadYamlResource;
 import static io.digdag.client.config.ConfigUtils.newConfig;
 
 public class ConfigEvalEngineTest
 {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     private List<ConfigEvalEngine> engines;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -88,10 +84,10 @@ public class ConfigEvalEngineTest
             throws Exception
     {
         for (ConfigEvalEngine engine : engines) {
-            exception.expect(TemplateException.class);
-            exception.expectMessage(containsString("ReferenceError"));
-            exception.expectMessage(containsString("no_such_var"));
-            engine.eval(newConfig().set("key", "${no_such_var}"), params());
+            TemplateException ex = assertThrows(TemplateException.class,
+                    () -> engine.eval(newConfig().set("key", "${no_such_var}"), params()));
+            assertThat(ex.getMessage(), containsString("ReferenceError"));
+            assertThat(ex.getMessage(), containsString("no_such_var"));
         }
     }
 
@@ -112,10 +108,10 @@ public class ConfigEvalEngineTest
             throws Exception
     {
         for (ConfigEvalEngine engine : engines) {
-            exception.expect(TemplateException.class);
-            exception.expectMessage(containsString("TypeError"));
-            exception.expectMessage(containsString("invalid_access"));
-            engine.eval(newConfig().set("key", "${timezone.no_such_field.invalid_access}"), params());
+            TemplateException ex = assertThrows(TemplateException.class,
+                    () -> engine.eval(newConfig().set("key", "${timezone.no_such_field.invalid_access}"), params()));
+            assertThat(ex.getMessage(), containsString("TypeError"));
+            assertThat(ex.getMessage(), containsString("invalid_access"));
         }
     }
 

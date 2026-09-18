@@ -9,11 +9,10 @@ import io.digdag.core.database.TransactionManager;
 import io.digdag.core.repository.ModelValidationException;
 import io.digdag.core.workflow.WorkflowExecutor;
 import io.digdag.spi.metrics.DigdagMetrics;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -23,7 +22,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
 public class SessionMonitorExecutorTest
 {
     @Mock
@@ -43,9 +41,10 @@ public class SessionMonitorExecutorTest
 
     private SessionMonitorExecutor sessionMonitorExecutor;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         // Make io.digdag.core.database.TransactionManager#begin execute a passed function
         doAnswer(answer -> {
             TransactionManager.SupplierInTransaction<Void, RuntimeException, RuntimeException, RuntimeException, RuntimeException> func =

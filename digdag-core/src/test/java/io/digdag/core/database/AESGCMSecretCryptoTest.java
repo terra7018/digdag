@@ -2,20 +2,17 @@ package io.digdag.core.database;
 
 import com.google.common.base.Strings;
 import io.digdag.core.crypto.SecretCryptoException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Base64;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AESGCMSecretCryptoTest
 {
-    @Rule public ExpectedException expectedException = ExpectedException.none();
-
     private final static byte[] KEY1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
     private final static String KEY1_BASE64 = Base64.getEncoder().encodeToString(KEY1);
 
@@ -29,7 +26,7 @@ public class AESGCMSecretCryptoTest
 
     private static final String TEXT = "Hello Secret World!";
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -59,8 +56,7 @@ public class AESGCMSecretCryptoTest
             throws Exception
     {
         String encrypted = crypto1.encryptSecret(TEXT);
-        expectedException.expect(SecretCryptoException.class);
-        crypto2.decryptSecret(encrypted);
+        assertThrows(SecretCryptoException.class, () -> crypto2.decryptSecret(encrypted));
     }
 
     @Test
@@ -68,7 +64,6 @@ public class AESGCMSecretCryptoTest
             throws Exception
     {
         crypto1.encryptSecret(Strings.repeat(".", 16 * 1024));
-        expectedException.expect(IllegalArgumentException.class);
-        crypto1.encryptSecret(Strings.repeat(".", 16 * 1024 + 1));
+        assertThrows(IllegalArgumentException.class, () -> crypto1.encryptSecret(Strings.repeat(".", 16 * 1024 + 1)));
     }
 }

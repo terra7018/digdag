@@ -7,40 +7,37 @@ import io.digdag.client.config.ConfigFactory;
 import io.digdag.commons.ThrowablesUtil;
 import io.digdag.core.DigdagEmbed;
 import io.digdag.core.config.YamlConfigLoader;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WorkflowCompilerTest
 {
     private static DigdagEmbed embed;
 
-    @Rule public ExpectedException exception = ExpectedException.none();
-
     private WorkflowCompiler compiler;
 
-    @BeforeClass
+    @BeforeAll
     public static void createDigdagEmbed()
             throws Exception
     {
         embed = WorkflowTestingUtils.setupEmbed();
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroyDigdagEmbed()
             throws Exception
     {
         embed.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -71,32 +68,28 @@ public class WorkflowCompilerTest
     public void verifyMultipleOperatorsFail()
     {
         Config config = loadYamlResource("/io/digdag/core/workflow/multiple_operators.dig");
-        exception.expect(ConfigException.class);
-        compiler.compile("multiple_operators", config);
+        assertThrows(ConfigException.class, () -> compiler.compile("multiple_operators", config));
     }
 
     @Test
     public void verifyUnusedKeysInGroupingTask()
     {
         Config config = loadYamlResource("/io/digdag/core/workflow/unused_keys_in_group.dig");
-        exception.expect(ConfigException.class);
-        compiler.compile("unused_keys_in_group", config);
+        assertThrows(ConfigException.class, () -> compiler.compile("unused_keys_in_group", config));
     }
 
     @Test
     public void verifyErrorTaskIsValidated()
     {
         Config config = loadYamlResource("/io/digdag/core/workflow/invalid_error_task.dig");
-        exception.expect(ConfigException.class);
-        compiler.compile("invalid_error_task", config);
+        assertThrows(ConfigException.class, () -> compiler.compile("invalid_error_task", config));
     }
 
     @Test
     public void verifyVariableForParallelInGroupFail()
     {
         Config config = loadYamlResource("/io/digdag/core/workflow/parallel_variable_group.dig");
-        exception.expect(ConfigException.class);
-        compiler.compile("parallel_variable_group", config);
+        assertThrows(ConfigException.class, () -> compiler.compile("parallel_variable_group", config));
     }
 
     @Test

@@ -2,8 +2,8 @@ package io.digdag.core.workflow;
 
 import java.util.List;
 import com.google.common.collect.ImmutableList;
-import org.junit.Test;
-import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import io.digdag.core.session.TaskRelation;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +12,7 @@ public class TaskTreeTest
 {
     private TaskTree tree;
 
-    @Before
+    @BeforeEach
     public void makeTree()
     {
         //                   1
