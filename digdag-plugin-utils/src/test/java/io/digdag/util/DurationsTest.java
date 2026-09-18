@@ -1,7 +1,7 @@
 package io.digdag.util;
 
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
@@ -11,7 +11,7 @@ import static io.digdag.util.Durations.formatDuration;
 import static io.digdag.util.Durations.parseDuration;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DurationsTest
 {

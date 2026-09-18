@@ -2,11 +2,11 @@ package io.digdag.util;
 
 import com.google.common.base.Optional;
 import io.digdag.client.config.ConfigException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class UserSecretTemplateTest
 {

@@ -8,8 +8,7 @@ import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigException;
 import io.digdag.client.config.ConfigFactory;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -17,6 +16,7 @@ import java.util.concurrent.Callable;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AbstractWaitOperatorFactoryTest
 {
@@ -146,6 +146,6 @@ public class AbstractWaitOperatorFactoryTest
             assertThat(e, Matchers.instanceOf(exceptionClass));
             return;
         }
-        Assert.fail("Expected an exception of type: " + exceptionClass);
+        fail("Expected an exception of type: " + exceptionClass);
     }
 }
