@@ -9,14 +9,14 @@ import io.digdag.server.metrics.jmx.JmxMonitorSystemConfig;
 import io.digdag.spi.metrics.DigdagMetrics;
 import static io.digdag.client.DigdagClient.objectMapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 
@@ -26,7 +26,7 @@ public class DigdagMetricsConfigTest
 
     Config config;
 
-    @Before
+    @BeforeEach
     public void setup()
     {
         config = ConfigElement.ofMap(new HashMap<String,String>()).toConfig(new ConfigFactory(objectMapper()));
@@ -41,7 +41,7 @@ public class DigdagMetricsConfigTest
     public void testDefault()
     {
         DigdagMetricsConfig metricsConfig = new DigdagMetricsConfig(config);
-        assertFalse("No jmx config", metricsConfig.getMonitorSystemConfig("jmx").isPresent());
+        assertFalse(metricsConfig.getMonitorSystemConfig("jmx").isPresent(), "No jmx config");
     }
 
     @Test
@@ -54,13 +54,13 @@ public class DigdagMetricsConfigTest
         DigdagMetricsConfig metricsConfig = new DigdagMetricsConfig(config);
 
         Optional<JmxMonitorSystemConfig> jmxConfig = metricsConfig.getMonitorSystemConfig("jmx").transform((p) -> (JmxMonitorSystemConfig)p);
-        assertTrue("Exist jmx config", jmxConfig.isPresent());
-        assertTrue("plugin is enable", jmxConfig.get().getMonitorSystemEnable());
-        assertTrue("category 'agent' is enable", jmxConfig.get().enable(DigdagMetrics.Category.AGENT));
-        assertTrue("category 'api' is enable", jmxConfig.get().enable(DigdagMetrics.Category.API));
-        assertTrue("category 'db' is enable", jmxConfig.get().enable(DigdagMetrics.Category.DB));
-        assertTrue("category 'executor' is enable", jmxConfig.get().enable(DigdagMetrics.Category.EXECUTOR));
-        assertTrue("category 'default' is enable", jmxConfig.get().enable(DigdagMetrics.Category.DEFAULT));
+        assertTrue(jmxConfig.isPresent(), "Exist jmx config");
+        assertTrue(jmxConfig.get().getMonitorSystemEnable(), "plugin is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.AGENT), "category 'agent' is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.API), "category 'api' is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.DB), "category 'db' is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.EXECUTOR), "category 'executor' is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.DEFAULT), "category 'default' is enable");
     }
 
     @Test
@@ -78,13 +78,13 @@ public class DigdagMetricsConfigTest
         DigdagMetricsConfig metricsConfig = new DigdagMetricsConfig(config);
 
         Optional<JmxMonitorSystemConfig> jmxConfig = metricsConfig.getMonitorSystemConfig("jmx").transform((p) -> (JmxMonitorSystemConfig)p);
-        assertTrue("Exist jmx config", jmxConfig.isPresent());
-        assertTrue("plugin is enable", jmxConfig.get().getMonitorSystemEnable());
-        assertTrue("category 'agent' is enable", jmxConfig.get().enable(DigdagMetrics.Category.AGENT));
-        assertFalse("category 'api' is enable", jmxConfig.get().enable(DigdagMetrics.Category.API));
-        assertFalse("category 'db' is enable", jmxConfig.get().enable(DigdagMetrics.Category.DB));
-        assertTrue("category 'executor' is enable", jmxConfig.get().enable(DigdagMetrics.Category.EXECUTOR));
-        assertFalse("category 'default' is enable", jmxConfig.get().enable(DigdagMetrics.Category.DEFAULT));
+        assertTrue(jmxConfig.isPresent(), "Exist jmx config");
+        assertTrue(jmxConfig.get().getMonitorSystemEnable(), "plugin is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.AGENT), "category 'agent' is enable");
+        assertFalse(jmxConfig.get().enable(DigdagMetrics.Category.API), "category 'api' is enable");
+        assertFalse(jmxConfig.get().enable(DigdagMetrics.Category.DB), "category 'db' is enable");
+        assertTrue(jmxConfig.get().enable(DigdagMetrics.Category.EXECUTOR), "category 'executor' is enable");
+        assertFalse(jmxConfig.get().enable(DigdagMetrics.Category.DEFAULT), "category 'default' is enable");
     }
 
 
@@ -98,14 +98,14 @@ public class DigdagMetricsConfigTest
         DigdagMetricsConfig metricsConfig = new DigdagMetricsConfig(config);
 
         Optional<FluencyMonitorSystemConfig> fluencyConfig = metricsConfig.getMonitorSystemConfig("fluency").transform((p) -> (FluencyMonitorSystemConfig)p);
-        assertTrue("Exist fluency config", fluencyConfig.isPresent());
-        assertTrue("plugin is enable", fluencyConfig.get().getMonitorSystemEnable());
-        assertTrue("category 'agent' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.AGENT));
-        assertTrue("category 'api' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.API));
-        assertTrue("category 'db' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.DB));
-        assertTrue("category 'executor' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.EXECUTOR));
-        assertTrue("category 'default' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.DEFAULT));
-        assertEquals("step is 60 secs as default", 60L,  fluencyConfig.get().getStep());
+        assertTrue(fluencyConfig.isPresent(), "Exist fluency config");
+        assertTrue(fluencyConfig.get().getMonitorSystemEnable(), "plugin is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.AGENT), "category 'agent' is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.API), "category 'api' is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.DB), "category 'db' is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.EXECUTOR), "category 'executor' is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.DEFAULT), "category 'default' is enable");
+        assertEquals(60L, fluencyConfig.get().getStep(), "step is 60 secs as default");
     }
 
     @Test
@@ -126,15 +126,15 @@ public class DigdagMetricsConfigTest
         DigdagMetricsConfig metricsConfig = new DigdagMetricsConfig(config);
 
         Optional<FluencyMonitorSystemConfig> fluencyConfig = metricsConfig.getMonitorSystemConfig("fluency").transform((p) -> (FluencyMonitorSystemConfig)p);
-        assertTrue("Exist fluency config", fluencyConfig.isPresent());
-        assertTrue("plugin is enable", fluencyConfig.get().getMonitorSystemEnable());
-        assertTrue("category 'agent' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.AGENT));
-        assertFalse("category 'api' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.API));
-        assertFalse("category 'db' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.DB));
-        assertTrue("category 'executor' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.EXECUTOR));
-        assertFalse("category 'default' is enable", fluencyConfig.get().enable(DigdagMetrics.Category.DEFAULT));
-        assertEquals("host", "server01:9999", fluencyConfig.get().getHost());
-        assertEquals("tag", "tag0001", fluencyConfig.get().getTag());
-        assertEquals("step", 120L, fluencyConfig.get().getStep());
+        assertTrue(fluencyConfig.isPresent(), "Exist fluency config");
+        assertTrue(fluencyConfig.get().getMonitorSystemEnable(), "plugin is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.AGENT), "category 'agent' is enable");
+        assertFalse(fluencyConfig.get().enable(DigdagMetrics.Category.API), "category 'api' is enable");
+        assertFalse(fluencyConfig.get().enable(DigdagMetrics.Category.DB), "category 'db' is enable");
+        assertTrue(fluencyConfig.get().enable(DigdagMetrics.Category.EXECUTOR), "category 'executor' is enable");
+        assertFalse(fluencyConfig.get().enable(DigdagMetrics.Category.DEFAULT), "category 'default' is enable");
+        assertEquals("server01:9999", fluencyConfig.get().getHost(), "host");
+        assertEquals("tag0001", fluencyConfig.get().getTag(), "tag");
+        assertEquals(120L, fluencyConfig.get().getStep(), "step");
     }
 }

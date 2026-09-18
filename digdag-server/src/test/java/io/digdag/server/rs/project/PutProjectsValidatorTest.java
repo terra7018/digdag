@@ -1,11 +1,10 @@
 package io.digdag.server.rs.project;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.time.Instant;
 
@@ -16,15 +15,15 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 import static io.digdag.commons.AssertUtil.assertException;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PutProjectsValidatorTest {
     private PutProjectsValidator validator;
 
     @Mock TarArchiveEntry archiveEntry;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         validator = new PutProjectsValidator();
     }
 
