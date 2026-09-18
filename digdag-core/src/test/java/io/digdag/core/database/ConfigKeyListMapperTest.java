@@ -4,19 +4,19 @@ import io.digdag.client.config.ConfigKey;
 import java.sql.ResultSet;
 import java.util.List;
 import org.h2.tools.SimpleResultSet;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConfigKeyListMapperTest
 {
     private ConfigKeyListMapper mapper;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         mapper = new ConfigKeyListMapper();

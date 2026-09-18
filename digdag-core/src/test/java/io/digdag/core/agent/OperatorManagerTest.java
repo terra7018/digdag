@@ -16,11 +16,10 @@ import io.digdag.spi.SecretStoreManager;
 import io.digdag.spi.TaskExecutionException;
 import io.digdag.spi.TaskRequest;
 import io.digdag.spi.TaskResult;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -30,9 +29,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -48,7 +47,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
 public class OperatorManagerTest
 {
     private AgentConfig agentConfig = AgentConfig.defaultBuilder().build();
@@ -62,9 +60,10 @@ public class OperatorManagerTest
 
     private OperatorManager operatorManager;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         ConfigEvalEngine evalEngine = new ConfigEvalEngine(ConfigUtils.newConfig());
         WorkspaceManager workspaceManager = new LocalWorkspaceManager();
 

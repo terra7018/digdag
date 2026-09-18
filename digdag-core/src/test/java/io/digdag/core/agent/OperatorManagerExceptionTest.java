@@ -13,10 +13,10 @@ import io.digdag.spi.OperatorContext;
 import io.digdag.spi.OperatorFactory;
 import io.digdag.spi.TaskExecutionException;
 import io.digdag.spi.TaskResult;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 import java.util.Map;
@@ -26,7 +26,7 @@ import static io.digdag.core.workflow.OperatorTestingUtils.newTaskRequest;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class OperatorManagerExceptionTest
 {
@@ -94,7 +94,7 @@ public class OperatorManagerExceptionTest
 
     private OperatorManager operatorManager;
 
-    @BeforeClass
+    @BeforeAll
     public static void shutdown()
             throws Exception
     {
@@ -105,14 +105,14 @@ public class OperatorManagerExceptionTest
         );
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroyDigdagEmbed()
             throws Exception
     {
         embed.close();
     }
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {

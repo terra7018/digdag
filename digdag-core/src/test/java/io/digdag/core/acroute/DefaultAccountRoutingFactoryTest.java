@@ -7,12 +7,12 @@ import io.digdag.client.config.ConfigException;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.spi.AccountRouting;
 import io.digdag.spi.AccountRouting.ModuleType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultAccountRoutingFactoryTest
 {
@@ -28,20 +28,20 @@ public class DefaultAccountRoutingFactoryTest
                 .set("agent.account_routing.exclude", "11,12,13,14");
         {
             AccountRouting ac = DefaultAccountRoutingFactory.fromConfig(systemConfig, Optional.of(ModuleType.EXECUTOR.toString()));
-            assertTrue("Account routing must be enabled", ac.enabled());
+            assertTrue(ac.enabled(), "Account routing must be enabled");
             assertEquals("site_id in (1,2,3,4)", ac.getFilterSQL());
         }
 
         {
             AccountRouting ac = DefaultAccountRoutingFactory.fromConfig(systemConfig, Optional.of(ModuleType.AGENT.toString()));
-            assertTrue("Account routing must be enabled", ac.enabled());
+            assertTrue(ac.enabled(), "Account routing must be enabled");
             assertEquals("site_id not in (11,12,13,14)", ac.getFilterSQL());
         }
 
         {
             AccountRouting ac = DefaultAccountRoutingFactory.fromConfig(systemConfig, Optional.of(ModuleType.SCHEDULER.toString()));
-            assertFalse("Account routing must be disabled", ac.enabled());
-            assertFalse("Filter SQL must be empty", ac.getFilterSQLOpt().isPresent());
+            assertFalse(ac.enabled(), "Account routing must be disabled");
+            assertFalse(ac.getFilterSQLOpt().isPresent(), "Filter SQL must be empty");
         }
 
     }

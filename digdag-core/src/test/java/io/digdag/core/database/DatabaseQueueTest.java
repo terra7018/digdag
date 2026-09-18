@@ -11,16 +11,15 @@ import io.digdag.spi.TaskQueueLock;
 import io.digdag.spi.TaskConflictException;
 import io.digdag.spi.TaskNotFoundException;
 import com.google.common.base.Optional;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
 import static io.digdag.client.config.ConfigUtils.newConfig;
 import static io.digdag.core.database.DatabaseTestingUtils.createConfigMapper;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static io.digdag.client.DigdagClient.objectMapper;
 import static io.digdag.core.database.DatabaseTestingUtils.createConfigFactory;
 import static io.digdag.core.database.DatabaseTestingUtils.setupDatabase;
@@ -28,9 +27,6 @@ import static io.digdag.core.database.DatabaseTestingUtils.setupDatabase;
 public class DatabaseQueueTest
 {
     private static final int siteId = 0;
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     private DatabaseFactory factory;
     private DatabaseTaskQueueServer taskQueue;
@@ -41,7 +37,7 @@ public class DatabaseQueueTest
     private AccountRouting accountRoutingInclude0;
     private AccountRouting accountRoutingExclude0;
 
-    @Before
+    @BeforeEach
     public void setUp()
         throws Exception
     {
@@ -70,7 +66,7 @@ public class DatabaseQueueTest
         this.accountRoutingExclude0 = DefaultAccountRoutingFactory.fromConfig(cf1, Optional.of(AccountRouting.ModuleType.AGENT.toString()));
     }
 
-    @After
+    @AfterEach
     public void destroy()
     {
         factory.close();
@@ -148,8 +144,7 @@ public class DatabaseQueueTest
 
         taskQueue.enqueueDefaultQueueTask(siteId, req1);
 
-        exception.expect(TaskConflictException.class);
-        taskQueue.enqueueDefaultQueueTask(siteId, req1Dup);
+        assertThrows(TaskConflictException.class, () -> taskQueue.enqueueDefaultQueueTask(siteId, req1Dup));
     }
 
     @Test
@@ -162,8 +157,7 @@ public class DatabaseQueueTest
 
         List<TaskQueueLock> poll1 = taskQueue.lockSharedAgentTasks(1, "agent1", 300, 10, accountRoutingDisabled);
 
-        exception.expect(TaskConflictException.class);
-        taskQueue.deleteTask(siteId, poll1.get(0).getLockId(), "different-agent");
+        assertThrows(TaskConflictException.class, () -> taskQueue.deleteTask(siteId, poll1.get(0).getLockId(), "different-agent"));
     }
 
     @Test
@@ -175,8 +169,7 @@ public class DatabaseQueueTest
         taskQueue.enqueueDefaultQueueTask(siteId, req1);
         List<TaskQueueLock> poll1 = taskQueue.lockSharedAgentTasks(1, "agent1", 300, 10, accountRoutingDisabled);
 
-        exception.expect(TaskNotFoundException.class);
-        taskQueue.deleteTask(19832, poll1.get(0).getLockId(), "agent1");
+        assertThrows(TaskNotFoundException.class, () -> taskQueue.deleteTask(19832, poll1.get(0).getLockId(), "agent1"));
     }
 
     @Test

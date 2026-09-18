@@ -15,8 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Base64;
 
@@ -46,7 +46,7 @@ public class DatabaseSecretStoreTest
     private SecretStore secretStore;
     private int projectId;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {

@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import io.digdag.core.acroute.DefaultAccountRoutingFactory;
 import io.digdag.spi.AccountRouting;
 import org.hamcrest.Matchers;
-import org.junit.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import com.google.common.base.Optional;
 import com.google.common.collect.*;
 import io.digdag.core.repository.*;
@@ -55,7 +57,7 @@ public class DatabaseSessionStoreManagerTest
     private AccountRouting accountRoutingInclude0; // account_routing.include = 0;
     private AccountRouting accountRoutingExclude0; // account_routing.exclude = 0;
 
-    @Before
+    @BeforeEach
     public void setUp()
         throws Exception
     {
@@ -131,7 +133,7 @@ public class DatabaseSessionStoreManagerTest
         this.accountRoutingExclude0 = DefaultAccountRoutingFactory.fromConfig(cf1, Optional.of(AccountRouting.ModuleType.EXECUTOR.toString()));
     }
 
-    @After
+    @AfterEach
     public void destroy()
     {
         factory.close();

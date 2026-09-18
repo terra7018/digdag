@@ -19,19 +19,18 @@ import io.digdag.core.workflow.WorkflowExecutor;
 import io.digdag.spi.AccountRouting;
 import io.digdag.spi.ScheduleTime;
 import io.digdag.spi.Scheduler;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import javax.sql.DataSource;
 
 import java.time.Instant;
 
 import static java.time.ZoneOffset.UTC;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.eq;
@@ -41,7 +40,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.spy;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ScheduleExecutorTest
 {
     private static final int SCHEDULE_ID = 13;
@@ -75,10 +73,11 @@ public class ScheduleExecutorTest
     private Instant now;
     private Config workflowConfig;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         transactionManager = new ThreadLocalTransactionManager(dataSource);
         scheduleExecutor = spy(
                 new ScheduleExecutor(

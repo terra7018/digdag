@@ -21,9 +21,9 @@ import io.digdag.core.repository.StoredWorkflowDefinitionWithProject;
 import io.digdag.core.repository.TimeZoneMap;
 import io.digdag.core.repository.WorkflowDefinition;
 import io.digdag.core.schedule.SchedulerManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
@@ -38,11 +38,11 @@ import static io.digdag.core.database.DatabaseTestingUtils.createRevision;
 import static io.digdag.core.database.DatabaseTestingUtils.createWorkflow;
 import static io.digdag.core.database.DatabaseTestingUtils.setupDatabase;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DatabaseProjectStoreManagerTest
 {
@@ -51,7 +51,7 @@ public class DatabaseProjectStoreManagerTest
     private SchedulerManager sm;
     private ProjectStore store;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -63,7 +63,7 @@ public class DatabaseProjectStoreManagerTest
         });
     }
 
-    @After
+    @AfterEach
     public void destroy()
     {
         factory.close();

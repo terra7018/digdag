@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.digdag.client.DigdagClient;
 import io.digdag.client.config.Config;
 import io.digdag.core.repository.ArchiveType;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -22,7 +22,7 @@ public class ArchiveManagerTest
 {
     private ArchiveManager archiveManager;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws IOException
     {
