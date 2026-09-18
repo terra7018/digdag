@@ -1,7 +1,9 @@
 package io.digdag.cli;
 
 import com.beust.jcommander.ParameterException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BasicAuthParameterValidatorTest
 {
@@ -11,21 +13,21 @@ public class BasicAuthParameterValidatorTest
         new BasicAuthParameterValidator().validate(null, "user:pass");
     }
 
-    @Test(expected = ParameterException.class)
+    @Test
     public void missingUsernameFails()
     {
-        new BasicAuthParameterValidator().validate(null, ":pass");
+        assertThrows(ParameterException.class, () -> new BasicAuthParameterValidator().validate(null, ":pass"));
     }
 
-    @Test(expected = ParameterException.class)
+    @Test
     public void missingPasswordFails()
     {
-        new BasicAuthParameterValidator().validate(null, "user:");
+        assertThrows(ParameterException.class, () -> new BasicAuthParameterValidator().validate(null, "user:"));
     }
 
-    @Test(expected = ParameterException.class)
+    @Test
     public void missingColonFails()
     {
-        new BasicAuthParameterValidator().validate(null, "userpass");
+        assertThrows(ParameterException.class, () -> new BasicAuthParameterValidator().validate(null, "userpass"));
     }
 }

@@ -15,4 +15,12 @@ dependencies {
     // dynamic class loading. digdag-cli itself doesn't depend on digdag-storage-s3.
     compile project(':digdag-storage-s3')
     compile project(':digdag-storage-gcs')
+
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
 }
