@@ -4,23 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigException;
 import io.digdag.client.config.ConfigFactory;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ParallelControlTest
 {
-    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
     private final ConfigFactory configFactory = new ConfigFactory(new ObjectMapper());
 
     private Config newConfig()
