@@ -21,10 +21,9 @@ import io.digdag.spi.CommandExecutor;
 import io.digdag.spi.CommandExecutorFactory;
 import io.digdag.spi.CommandLogger;
 import io.digdag.spi.TemplateEngine;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
 
@@ -32,19 +31,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CommandExecutorProviderTest
 {
     private final ObjectMapper om = new ObjectMapper();
     private final ConfigFactory configFactory = new ConfigFactory(om);
     private Config systemConfig;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         this.systemConfig = configFactory.create();
     }
 

@@ -6,8 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import io.digdag.spi.SecretNotFoundException;
 import io.digdag.standards.operator.jdbc.JdbcOpTestHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,6 +16,7 @@ import java.util.Properties;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RedshiftConnectionConfigTest
 {
@@ -27,7 +28,7 @@ public class RedshiftConnectionConfigTest
     private RedshiftConnectionConfig connConfigWithCustomValueFromSecrets;
     private RedshiftConnectionConfig connConfigWithOverriddenPassword;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws IOException
     {
@@ -169,7 +170,7 @@ public class RedshiftConnectionConfigTest
         validateCustomValueProperties(connConfigWithOverriddenPassword.buildProperties(), Optional.of("password2"));
     }
 
-    @Test(expected = SecretNotFoundException.class)
+    @Test
     public void configureWithMissingOverriddenPassword()
             throws IOException
     {
@@ -180,9 +181,10 @@ public class RedshiftConnectionConfigTest
                 put("password_override", "missing_db_password").
                 put("database", "database1").build();
 
-        RedshiftConnectionConfig.configure(
-                key -> key.equals("password") ? Optional.of("password1") : Optional.absent(),
-                jdbcOpTestHelper.createConfig(configValues)
-        );
+        assertThrows(SecretNotFoundException.class, () ->
+                RedshiftConnectionConfig.configure(
+                        key -> key.equals("password") ? Optional.of("password1") : Optional.absent(),
+                        jdbcOpTestHelper.createConfig(configValues)
+                ));
     }
 }

@@ -5,7 +5,7 @@ import io.digdag.client.DigdagClient;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.spi.TaskExecutionException;
 import io.digdag.standards.operator.DurationInterval;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +16,7 @@ import java.util.List;
 
 import static io.digdag.standards.operator.state.PollingWaiter.pollingWaiter;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PollingWaiterTest
 {
@@ -55,36 +56,37 @@ public class PollingWaiterTest
         assertThat("Correct answer ", answer.intValue() == expected.intValue());
     }
 
-    @Test(expected = PollingTimeoutException.class)
+    @Test
     public void testTimeout()
     {
         Integer expected = 99;
-        Integer answer = null;
         List<Integer> intervalList = new ArrayList<>();
         List<Optional<Integer>> reterns = Arrays.asList(Optional.absent(), Optional.absent(), Optional.absent(), Optional.of(expected));
         TaskState state = TaskState.of(CF.create());
-        for (Optional<Integer> ret: reterns) {
-            logger.debug("state:{}", state);
-            try {
-                answer = pollingWaiter(state, "EXISTS")
-                        .withTimeout(Optional.of(Duration.ofSeconds(20)))
-                        .withPollInterval(POLL_INTERVAL)
-                        .withWaitMessage("Return value does not exist")
-                        .await( pollstate  -> { return ret;} );
-            }
-            catch (TaskExecutionException te) {
-                logger.debug("TaskExecutionException interval:{}", te.getRetryInterval());
-                if (te.getRetryInterval().isPresent()) {
-                    intervalList.add(te.getRetryInterval().get());
-                    try {
-                        Thread.sleep(te.getRetryInterval().get() * 1000);
-                    }
-                    catch (InterruptedException ie) {
+        assertThrows(PollingTimeoutException.class, () -> {
+            for (Optional<Integer> ret: reterns) {
+                logger.debug("state:{}", state);
+                try {
+                    pollingWaiter(state, "EXISTS")
+                            .withTimeout(Optional.of(Duration.ofSeconds(20)))
+                            .withPollInterval(POLL_INTERVAL)
+                            .withWaitMessage("Return value does not exist")
+                            .await( pollstate  -> { return ret;} );
+                }
+                catch (TaskExecutionException te) {
+                    logger.debug("TaskExecutionException interval:{}", te.getRetryInterval());
+                    if (te.getRetryInterval().isPresent()) {
+                        intervalList.add(te.getRetryInterval().get());
+                        try {
+                            Thread.sleep(te.getRetryInterval().get() * 1000);
+                        }
+                        catch (InterruptedException ie) {
 
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
     @Test

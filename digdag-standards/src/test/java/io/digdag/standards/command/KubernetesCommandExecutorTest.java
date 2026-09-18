@@ -16,11 +16,10 @@ import io.digdag.standards.command.kubernetes.KubernetesClient;
 import io.digdag.standards.command.kubernetes.KubernetesClientConfig;
 import io.digdag.standards.command.kubernetes.KubernetesClientFactory;
 import io.digdag.standards.command.kubernetes.TemporalConfigStorage;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,7 +29,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class KubernetesCommandExecutorTest
 {
     private final ObjectMapper om = new ObjectMapper();
@@ -43,10 +41,11 @@ public class KubernetesCommandExecutorTest
     @Mock private ProjectArchiveLoader projectArchiveLoader;
     @Mock private CommandLogger commandLogger;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         this.systemConfig = configFactory.create();
     }
 

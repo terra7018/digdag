@@ -6,10 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import io.digdag.spi.OperatorContext;
 import io.digdag.spi.TaskRequest;
 import io.digdag.standards.operator.jdbc.JdbcOpTestHelper;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,10 +26,7 @@ public class RedshiftUnloadOperatorFactoryTest
     private JdbcOpTestHelper testHelper = new JdbcOpTestHelper();
     private RedshiftUnloadOperatorFactory operatorFactory;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp()
     {
         operatorFactory = newOperatorFactory(RedshiftUnloadOperatorFactory.class);

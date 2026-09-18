@@ -3,12 +3,12 @@ package io.digdag.standards.operator.td;
 import com.google.common.base.Optional;
 import com.treasuredata.client.model.TDJobRequest;
 import io.digdag.client.config.Config;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,16 +18,21 @@ import static io.digdag.core.workflow.OperatorTestingUtils.newTaskRequest;
 import static io.digdag.standards.operator.td.TdOperatorTestingUtils.newOperatorFactory;
 import static io.digdag.client.config.ConfigUtils.newConfig;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TdWaitTableOperatorFactoryTest
 {
     @Mock
     TDOperator op;
+
+    @BeforeEach
+    public void initMocks()
+    {
+        MockitoAnnotations.initMocks(this);
+    }
 
     /**
      * Check config parameters are set to TDJobRequest

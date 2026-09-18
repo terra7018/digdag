@@ -3,7 +3,7 @@ package io.digdag.standards;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.treasuredata.client.ProxyConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 

@@ -4,17 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
 public class KubernetesClientConfigTest
 {
     private final ObjectMapper om = new ObjectMapper();
@@ -24,10 +22,11 @@ public class KubernetesClientConfigTest
     private final Optional<String> clusterName = Optional.of("test");
     private String kubeConfigPath;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         File file = new File("src/test/resources/io/digdag/standards/command/kubernetes/kube_config.yaml");
         kubeConfigPath = file.getAbsolutePath();
     }

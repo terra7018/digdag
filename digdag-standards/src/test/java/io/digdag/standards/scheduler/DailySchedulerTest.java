@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import com.google.common.base.Optional;
 import io.digdag.spi.Scheduler;
 import io.digdag.spi.ScheduleTime;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static java.util.Locale.ENGLISH;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

@@ -7,10 +7,8 @@ import io.digdag.client.config.ConfigException;
 import io.digdag.spi.OperatorContext;
 import io.digdag.spi.TaskRequest;
 import io.digdag.standards.operator.jdbc.JdbcOpTestHelper;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,7 +18,7 @@ import static io.digdag.core.workflow.OperatorTestingUtils.newOperatorFactory;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,10 +27,7 @@ public class RedshiftLoadOperatorFactoryTest
     private JdbcOpTestHelper testHelper = new JdbcOpTestHelper();
     private RedshiftLoadOperatorFactory operatorFactory;
 
-    @Rule
-    public ExpectedException thrown= ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp()
     {
         operatorFactory = newOperatorFactory(RedshiftLoadOperatorFactory.class);
@@ -330,9 +325,7 @@ public class RedshiftLoadOperatorFactoryTest
                 "statupdate", "YES"
         );
 
-        this.thrown.expect(ConfigException.class);
-        getCopyConfig(configInput);
-        assertTrue(false);
+        assertThrows(ConfigException.class, () -> getCopyConfig(configInput));
     }
 
     @Test
@@ -346,9 +339,7 @@ public class RedshiftLoadOperatorFactoryTest
                 "compupdate", "YES"
         );
 
-        this.thrown.expect(ConfigException.class);
-        getCopyConfig(configInput);
-        assertTrue(false);
+        assertThrows(ConfigException.class, () -> getCopyConfig(configInput));
     }
 
     @Test
@@ -360,9 +351,7 @@ public class RedshiftLoadOperatorFactoryTest
                 "csv", ""
         );
 
-        this.thrown.expect(ConfigException.class);
-        getCopyConfig(configInput);
-        assertTrue(false);
+        assertThrows(ConfigException.class, () -> getCopyConfig(configInput));
     }
 
     @Test
@@ -374,9 +363,7 @@ public class RedshiftLoadOperatorFactoryTest
                 "csv", ""
         );
 
-        this.thrown.expect(ConfigException.class);
-        getCopyConfig(configInput);
-        assertTrue(false);
+        assertThrows(ConfigException.class, () -> getCopyConfig(configInput));
     }
 
     @Test
@@ -387,18 +374,17 @@ public class RedshiftLoadOperatorFactoryTest
                 .put("removequotes", true)
                 .put("escape", true)
                 .build();
-        for (Map.Entry<String, Object> kv : kvs.entrySet()) {
-            Map<String, Object> configInput = ImmutableMap.of(
-                    "table", "my_table",
-                    "from", "s3://my-bucket/my-path",
-                    "csv", "",
-                    kv.getKey(), kv.getValue()
-            );
-
-            this.thrown.expect(ConfigException.class);
-            getCopyConfig(configInput);
-            assertTrue(kv.toString(), false);
-        }
+        assertThrows(ConfigException.class, () -> {
+            for (Map.Entry<String, Object> kv : kvs.entrySet()) {
+                Map<String, Object> configInput = ImmutableMap.of(
+                        "table", "my_table",
+                        "from", "s3://my-bucket/my-path",
+                        "csv", "",
+                        kv.getKey(), kv.getValue()
+                );
+                getCopyConfig(configInput);
+            }
+        });
     }
 
     @Test
@@ -411,18 +397,17 @@ public class RedshiftLoadOperatorFactoryTest
                 .put("json", "auto")
                 .put("avro", "auto")
                 .build();
-        for (Map.Entry<String, Object> kv : kvs.entrySet()) {
-            Map<String, Object> configInput = ImmutableMap.of(
-                    "table", "my_table",
-                    "from", "s3://my-bucket/my-path",
-                    "fixedwidth", "col0:42",
-                    kv.getKey(), kv.getValue()
-            );
-
-            this.thrown.expect(ConfigException.class);
-            getCopyConfig(configInput);
-            assertTrue(kv.toString(), false);
-        }
+        assertThrows(ConfigException.class, () -> {
+            for (Map.Entry<String, Object> kv : kvs.entrySet()) {
+                Map<String, Object> configInput = ImmutableMap.of(
+                        "table", "my_table",
+                        "from", "s3://my-bucket/my-path",
+                        "fixedwidth", "col0:42",
+                        kv.getKey(), kv.getValue()
+                );
+                getCopyConfig(configInput);
+            }
+        });
     }
 
     @Test
@@ -439,18 +424,17 @@ public class RedshiftLoadOperatorFactoryTest
                 .put("readratio", 150)
                 .put("removequotes", true)
                 .build();
-        for (Map.Entry<String, Object> kv : kvs.entrySet()) {
-            Map<String, Object> configInput = ImmutableMap.of(
-                    "table", "my_table",
-                    "from", "s3://my-bucket/my-path",
-                    "json", "auto",
-                    kv.getKey(), kv.getValue()
-            );
-
-            this.thrown.expect(ConfigException.class);
-            getCopyConfig(configInput);
-            assertTrue(kv.toString(), false);
-        }
+        assertThrows(ConfigException.class, () -> {
+            for (Map.Entry<String, Object> kv : kvs.entrySet()) {
+                Map<String, Object> configInput = ImmutableMap.of(
+                        "table", "my_table",
+                        "from", "s3://my-bucket/my-path",
+                        "json", "auto",
+                        kv.getKey(), kv.getValue()
+                );
+                getCopyConfig(configInput);
+            }
+        });
     }
 
     @Test
@@ -462,17 +446,16 @@ public class RedshiftLoadOperatorFactoryTest
                 .put("delimiter", "'")
                 .put("json", "auto")
                 .build();
-        for (Map.Entry<String, Object> kv : kvs.entrySet()) {
-            Map<String, Object> configInput = ImmutableMap.of(
-                    "table", "my_table",
-                    "from", "s3://my-bucket/my-path",
-                    "avro", "auto",
-                    kv.getKey(), kv.getValue()
-            );
-
-            this.thrown.expect(ConfigException.class);
-            getCopyConfig(configInput);
-            assertTrue(kv.toString(), false);
-        }
+        assertThrows(ConfigException.class, () -> {
+            for (Map.Entry<String, Object> kv : kvs.entrySet()) {
+                Map<String, Object> configInput = ImmutableMap.of(
+                        "table", "my_table",
+                        "from", "s3://my-bucket/my-path",
+                        "avro", "auto",
+                        kv.getKey(), kv.getValue()
+                );
+                getCopyConfig(configInput);
+            }
+        });
     }
 }

@@ -5,8 +5,8 @@ import com.google.common.collect.ImmutableMap;
 import io.digdag.spi.Operator;
 import io.digdag.spi.TaskRequest;
 import io.digdag.standards.operator.jdbc.JdbcOpTestHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class PgOperatorFactoryTest
     private JdbcOpTestHelper testHelper = new JdbcOpTestHelper();
     private PgOperatorFactory operatorFactory;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         operatorFactory = newOperatorFactory(PgOperatorFactory.class);

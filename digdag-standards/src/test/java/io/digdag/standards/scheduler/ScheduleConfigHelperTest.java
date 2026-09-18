@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigException;
 import io.digdag.client.config.ConfigFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.ZoneId;
@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import static io.digdag.client.DigdagClient.objectMapper;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScheduleConfigHelperTest {
     static Config newConfig() {
@@ -44,22 +45,22 @@ public class ScheduleConfigHelperTest {
         assertThat(helper.getDateTimeEnd(config, "end", ZoneId.of("UTC")), is(Optional.of(Instant.ofEpochSecond(1651363200L))));
     }
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void testNonExistentDate()
     {
         // Non existent date
         Config config = newConfig()
                 .set("start", "2022-04-31");
-        System.out.println(helper.getDateTimeStart(config, "start", ZoneId.of("Asia/Tokyo")));
+        assertThrows(ConfigException.class, () -> helper.getDateTimeStart(config, "start", ZoneId.of("Asia/Tokyo")));
     }
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void testInvalidFormat()
     {
         // Non existent date
         Config config = newConfig()
                 .set("start", "2022-04-ii");
-        System.out.println(helper.getDateTimeStart(config, "start", ZoneId.of("Asia/Tokyo")));
+        assertThrows(ConfigException.class, () -> helper.getDateTimeStart(config, "start", ZoneId.of("Asia/Tokyo")));
     }
 
     @Test
@@ -68,20 +69,20 @@ public class ScheduleConfigHelperTest {
         helper.validateStartEnd(Optional.of(Instant.ofEpochSecond(1651330801L)), Optional.of(Instant.ofEpochSecond(1651330802L)));
     }
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void testValidateStartEndFail1()
     {
-        helper.validateStartEnd(Optional.of(Instant.ofEpochSecond(1651330801L)), Optional.of(Instant.ofEpochSecond(1651330800L)));
+        assertThrows(ConfigException.class, () -> helper.validateStartEnd(Optional.of(Instant.ofEpochSecond(1651330801L)), Optional.of(Instant.ofEpochSecond(1651330800L))));
     }
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void testValidateStartEndFail2()
     {
         // Can't accept start == end because end date will be added 1day internally
         // start: 2022-04-02
         // end: 2022-04-01
         // In above case, start will be parsed as "2022-04-02 00:00:00" and end will be parsed as "2022-04-02 00:00:00" (plus 1day)
-        helper.validateStartEnd(Optional.of(Instant.ofEpochSecond(1651330801L)), Optional.of(Instant.ofEpochSecond(1651330801L)));
+        assertThrows(ConfigException.class, () -> helper.validateStartEnd(Optional.of(Instant.ofEpochSecond(1651330801L)), Optional.of(Instant.ofEpochSecond(1651330801L))));
     }
 
 }

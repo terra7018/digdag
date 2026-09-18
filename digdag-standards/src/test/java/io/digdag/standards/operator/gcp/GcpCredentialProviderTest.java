@@ -7,12 +7,12 @@ import com.google.common.io.Resources;
 import io.digdag.client.DigdagClient;
 import io.digdag.spi.SecretProvider;
 import io.digdag.spi.TaskExecutionException;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -20,16 +20,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING) // these tests shouldn't be executed concurrently.
-@RunWith(MockitoJUnitRunner.class)
+@TestMethodOrder(MethodOrderer.MethodName.class) // these tests shouldn't be executed concurrently.
 public class GcpCredentialProviderTest
 {
     private static final ObjectMapper OBJECT_MAPPER = DigdagClient.objectMapper();
 
     @Mock SecretProvider secrets;
+
+    @BeforeEach
+    public void initMocks()
+    {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testCredentialWithServiceAccountKey() throws Exception
@@ -56,7 +62,7 @@ public class GcpCredentialProviderTest
         assertEquals("dummy-506@dummy-project.iam.gserviceaccount.com", credential.getServiceAccountId());
     }
 
-    @Test(expected = TaskExecutionException.class)
+    @Test
     public void testCredentialFailure() throws Exception
     {
         when(secrets.getSecretOptional("gcp.credential")).thenReturn(Optional.absent());
@@ -64,8 +70,6 @@ public class GcpCredentialProviderTest
         dummyKeyFile.delete();
 
         GcpCredentialProvider provider = new GcpCredentialProvider(OBJECT_MAPPER);
-        GoogleCredential credential = provider.credential(secrets).credential();
-
-        assertEquals("dummy-506@dummy-project.iam.gserviceaccount.com", credential.getServiceAccountId());
+        assertThrows(TaskExecutionException.class, () -> provider.credential(secrets).credential());
     }
 }

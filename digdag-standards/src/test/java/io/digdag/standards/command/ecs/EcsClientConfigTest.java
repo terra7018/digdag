@@ -6,12 +6,12 @@ import io.digdag.client.DigdagClient;
 import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigException;
 import io.digdag.client.config.ConfigFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class EcsClientConfigTest
 {
@@ -19,7 +19,7 @@ public class EcsClientConfigTest
     private final ConfigFactory cf = new ConfigFactory(om);
     private Config systemConfig;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         systemConfig = cf.create()

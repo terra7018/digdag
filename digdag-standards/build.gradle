@@ -98,7 +98,15 @@ dependencies {
 
     }
 
+    testImplementation platform('org.junit:junit-bom:5.10.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    // for the tests still on JUnit 4 (TemporaryFolder / WireMockRule / PowerMockRunner)
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+
     test {
+        useJUnitPlatform()
+
         // for BqDdlOperatorFactoryTest
         environment "GOOGLE_APPLICATION_CREDENTIALS", System.getProperty("java.io.tmpdir") + "/dummy-service-account-key.json"
     }

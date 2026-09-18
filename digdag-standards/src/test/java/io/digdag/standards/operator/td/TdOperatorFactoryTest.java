@@ -3,27 +3,26 @@ package io.digdag.standards.operator.td;
 import com.google.common.base.Optional;
 import com.treasuredata.client.model.TDJobRequest;
 import io.digdag.spi.TaskRequest;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import io.digdag.client.config.Config;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import static io.digdag.standards.operator.td.TdOperatorFactory.insertCommandStatement;
 import static io.digdag.standards.operator.td.TdOperatorFactory.wrapStmtWithComment;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static io.digdag.client.config.ConfigUtils.newConfig;
 import static io.digdag.core.workflow.OperatorTestingUtils.newContext;
@@ -32,7 +31,6 @@ import static io.digdag.standards.operator.td.TdOperatorTestingUtils.newOperator
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TdOperatorFactoryTest
 {
     @Mock
@@ -41,12 +39,10 @@ public class TdOperatorFactoryTest
     @Mock
     TaskRequest taskRequest;
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         when(taskRequest.getProjectId()).thenReturn(2);
         when(taskRequest.getProjectName()).thenReturn(Optional.absent());
         when(taskRequest.getSessionId()).thenReturn((long) 5);
@@ -300,10 +296,10 @@ public class TdOperatorFactoryTest
         Config config = newConfig()
             .set("_command", projectPath.resolve("..").resolve("parent.sql").toString());
 
-        exception.expectMessage("File name must not be outside of project path");
-
-        newOperatorFactory(TdOperatorFactory.class)
-            .newOperator(newContext(projectPath, newTaskRequest().withConfig(config)));
+        Throwable thrown = assertThrows(Throwable.class, () ->
+                newOperatorFactory(TdOperatorFactory.class)
+                    .newOperator(newContext(projectPath, newTaskRequest().withConfig(config))));
+        assertThat(thrown.getMessage(), containsString("File name must not be outside of project path"));
     }
 
     @Test
@@ -317,10 +313,10 @@ public class TdOperatorFactoryTest
             .set("query", "select 1")
             .set("result_settings", "{\"type\":\"http\"}");
 
-        exception.expectMessage("result_settings is valid only if result_connection is set");
-
-        newOperatorFactory(TdOperatorFactory.class)
-            .newOperator(newContext(projectPath, newTaskRequest().withConfig(config)));
+        Throwable thrown = assertThrows(Throwable.class, () ->
+                newOperatorFactory(TdOperatorFactory.class)
+                    .newOperator(newContext(projectPath, newTaskRequest().withConfig(config))));
+        assertThat(thrown.getMessage(), containsString("result_settings is valid only if result_connection is set"));
     }
 
     @Test

@@ -5,23 +5,21 @@ import io.digdag.client.config.Config;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.client.config.ConfigException;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class TemporalConfigStorageTest
 {
     private final ObjectMapper om = new ObjectMapper();
     private final ConfigFactory cf = new ConfigFactory(om);
     private static final String TEMPORAL_CONFIG_STORAGE_PARAMS_PREFIX = "agent.command_executor.kubernetes.config_storage.";
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void failValidateSystemConfig()
     {
         final Config systemConfig = cf.create();
-        TemporalConfigStorage.validateSystemConfig("in", systemConfig);
+        assertThrows(ConfigException.class, () -> TemporalConfigStorage.validateSystemConfig("in", systemConfig));
     }
 
     @Test
