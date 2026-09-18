@@ -19,20 +19,19 @@ import io.digdag.spi.TaskExecutionException;
 import io.digdag.standards.operator.DurationInterval;
 import io.digdag.standards.operator.state.TaskState;
 import io.digdag.standards.operator.td.TDOperator.SystemDefaultConfig;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
 import java.time.Duration;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeast;
@@ -46,7 +45,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class TDOperatorTest
 {
     static SystemDefaultConfig DEFAULT_DEFAULT_SYSTEM_CONFIG = new SystemDefaultConfig()
@@ -60,8 +58,6 @@ public class TDOperatorTest
 
     private static final ImmutableMap<String, String> EMPTY_ENV = ImmutableMap.of();
     private static final BaseTDClientFactory clientFactory = new TDClientFactory();
-
-    @Rule public final ExpectedException exception = ExpectedException.none();
 
     @Mock TDClient client;
     @Mock TDOperator.JobStarter jobStarter;
@@ -80,6 +76,12 @@ public class TDOperatorTest
         return configFactory.create();
     }
 
+    @BeforeEach
+    public void initMocks()
+    {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void verifyEmptyDatabaseParameterIsRejected()
             throws Exception
@@ -90,8 +92,8 @@ public class TDOperatorTest
         SecretProvider secrets = key -> Optional.fromNullable(
                 ImmutableMap.of("apikey", "foobar").get(key));
 
-        exception.expect(ConfigException.class);
-        TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets);
+        assertThrows(ConfigException.class, () ->
+                TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets));
     }
 
     @Test
@@ -104,8 +106,8 @@ public class TDOperatorTest
         SecretProvider secrets = key -> Optional.fromNullable(
                 ImmutableMap.of("apikey", "foobar").get(key));
 
-        exception.expect(ConfigException.class);
-        TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets);
+        assertThrows(ConfigException.class, () ->
+                TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets));
     }
 
     @Test
@@ -118,8 +120,8 @@ public class TDOperatorTest
         SecretProvider secrets = key -> Optional.fromNullable(
                 ImmutableMap.of("apikey", "").get(key));
 
-        exception.expect(ConfigException.class);
-        TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets);
+        assertThrows(ConfigException.class, () ->
+                TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets));
     }
 
     @Test
@@ -132,8 +134,8 @@ public class TDOperatorTest
         SecretProvider secrets = key -> Optional.fromNullable(
                 ImmutableMap.of("apikey", " \n\t").get(key));
 
-        exception.expect(ConfigException.class);
-        TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets);
+        assertThrows(ConfigException.class, () ->
+                TDOperator.fromConfig(clientFactory, DEFAULT_DEFAULT_SYSTEM_CONFIG, EMPTY_ENV, config, secrets));
     }
 
     @Test
@@ -375,8 +377,8 @@ public class TDOperatorTest
         // Start job: Fail with 404
         when(jobStarter.startJob(any(TDOperator.class), anyString()))
                 .thenThrow(new TDClientHttpNotFoundException("Database Not Found"));
-        exception.expect(TDClientHttpNotFoundException.class);
-        operator.runJob(TaskState.of(state), jobStateKey, pollInterval, retryInterval, jobStarter);
+        assertThrows(TDClientHttpNotFoundException.class, () ->
+                operator.runJob(TaskState.of(state), jobStateKey, pollInterval, retryInterval, jobStarter));
     }
 
     @Test
@@ -398,8 +400,8 @@ public class TDOperatorTest
         // Start job: Fail with TDClientException with TDClientException.ErrorType.INVALID_INPUT
         when(jobStarter.startJob(any(TDOperator.class), anyString()))
                 .thenThrow(new TDClientException(TDClientException.ErrorType.INVALID_INPUT, "Table name must follow this pattern ^([a-z0-9_]+)$: InsertIntoHere"));
-        exception.expect(TDClientException.class);
-        operator.runJob(TaskState.of(state), jobStateKey, pollInterval, retryInterval, jobStarter);
+        assertThrows(TDClientException.class, () ->
+                operator.runJob(TaskState.of(state), jobStateKey, pollInterval, retryInterval, jobStarter));
     }
 
     @Test

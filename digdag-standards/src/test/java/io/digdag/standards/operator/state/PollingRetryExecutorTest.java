@@ -5,10 +5,10 @@ import io.digdag.client.DigdagClient;
 import io.digdag.client.config.ConfigFactory;
 import io.digdag.spi.TaskExecutionException;
 import io.digdag.standards.operator.DurationInterval;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
 import java.time.Duration;
 import java.util.function.Function;
@@ -23,7 +23,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class PollingRetryExecutorTest
 {
     private static final String STATE_KEY = "foobar";
@@ -31,6 +30,12 @@ public class PollingRetryExecutorTest
     private static final ConfigFactory CF = new ConfigFactory(DigdagClient.objectMapper());
 
     @Mock Operation<Integer> operation;
+
+    @BeforeEach
+    public void initMocks()
+    {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testRunSuccess()

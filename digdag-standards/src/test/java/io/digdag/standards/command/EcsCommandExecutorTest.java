@@ -19,17 +19,16 @@ import io.digdag.standards.command.ecs.EcsClient;
 import io.digdag.standards.command.ecs.EcsClientConfig;
 import io.digdag.standards.command.ecs.EcsClientFactory;
 import io.digdag.standards.command.EcsCommandExecutor.EcsCommandStatus;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
@@ -40,7 +39,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class EcsCommandExecutorTest
 {
     private final ObjectMapper om = new ObjectMapper();
@@ -53,10 +51,11 @@ public class EcsCommandExecutorTest
     @Mock private ProjectArchiveLoader projectArchiveLoader;
     @Mock private CommandLogger commandLogger;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         this.systemConfig = configFactory.create();
     }
 

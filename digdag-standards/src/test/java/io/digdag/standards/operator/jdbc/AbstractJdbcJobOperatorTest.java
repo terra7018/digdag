@@ -16,10 +16,10 @@ import io.digdag.spi.TaskRequest;
 import io.digdag.spi.TaskResult;
 import io.digdag.spi.TemplateEngine;
 import org.immutables.value.Value;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -31,7 +31,8 @@ import java.util.function.Consumer;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -41,7 +42,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class AbstractJdbcJobOperatorTest
 {
     private final JdbcOpTestHelper testHelper = new JdbcOpTestHelper();
@@ -202,6 +202,12 @@ public class AbstractJdbcJobOperatorTest
         assertThat(taskResult.getStoreParams().has("pollInterval"), is(false));
     }
 
+    @BeforeEach
+    public void initMocks()
+    {
+        MockitoAnnotations.initMocks(this);
+    }
+
     @Test
     public void selectAndDownload()
             throws IOException, NotReadOnlyException
@@ -291,7 +297,7 @@ public class AbstractJdbcJobOperatorTest
         assertThat(first.get("float").floatValue(), is(3.14f));
     }
 
-    @Test(expected = TaskExecutionException.class)
+    @Test
     public void selectAndStoreAllResultsWithExceedingMaxRows()
             throws IOException, NotReadOnlyException
     {
@@ -305,10 +311,10 @@ public class AbstractJdbcJobOperatorTest
         );
         Config systemConfig = new ConfigFactory(DigdagClient.objectMapper()).create();
         systemConfig.set("config.jdbc.max_store_last_results_rows", 1);
-        runTaskReadOnly(Optional.of(systemConfig), configInput, sql);
+        assertThrows(TaskExecutionException.class, () -> runTaskReadOnly(Optional.of(systemConfig), configInput, sql));
     }
 
-    @Test(expected = TaskExecutionException.class)
+    @Test
     public void selectAndStoreAllResultsWithExceedingMaxColumns()
             throws IOException, NotReadOnlyException
     {
@@ -322,10 +328,10 @@ public class AbstractJdbcJobOperatorTest
         );
         Config systemConfig = new ConfigFactory(DigdagClient.objectMapper()).create();
         systemConfig.set("config.testop.max_store_last_results_columns", 2);
-        runTaskReadOnly(Optional.of(systemConfig), configInput, sql);
+        assertThrows(TaskExecutionException.class, () -> runTaskReadOnly(Optional.of(systemConfig), configInput, sql));
     }
 
-    @Test(expected = TaskExecutionException.class)
+    @Test
     public void selectAndStoreFirstResultsWithExceedingMaxColumns()
             throws IOException, NotReadOnlyException
     {
@@ -339,10 +345,10 @@ public class AbstractJdbcJobOperatorTest
         );
         Config systemConfig = new ConfigFactory(DigdagClient.objectMapper()).create();
         systemConfig.set("config.testop.max_store_last_results_columns", 2);
-        runTaskReadOnly(Optional.of(systemConfig), configInput, sql);
+        assertThrows(TaskExecutionException.class, () -> runTaskReadOnly(Optional.of(systemConfig), configInput, sql));
     }
 
-    @Test(expected = TaskExecutionException.class)
+    @Test
     public void selectAndStoreAllResultsWithExceedingMaxValueSize()
             throws IOException, NotReadOnlyException
     {
@@ -356,10 +362,10 @@ public class AbstractJdbcJobOperatorTest
         );
         Config systemConfig = new ConfigFactory(DigdagClient.objectMapper()).create();
         systemConfig.set("config.testop.max_store_last_results_value_size", 2);
-        runTaskReadOnly(Optional.of(systemConfig), configInput, sql);
+        assertThrows(TaskExecutionException.class, () -> runTaskReadOnly(Optional.of(systemConfig), configInput, sql));
     }
 
-    @Test(expected = ConfigException.class)
+    @Test
     public void selectAndStoreLastResultsWithConflictOption()
             throws IOException, NotReadOnlyException
     {
@@ -373,7 +379,7 @@ public class AbstractJdbcJobOperatorTest
                 .put("query", sql)
                 .build();
 
-        runTaskReadOnly(configInput, sql);
+        assertThrows(ConfigException.class, () -> runTaskReadOnly(configInput, sql));
     }
 
     @Test

@@ -16,13 +16,12 @@ import com.amazonaws.services.logs.model.GetLogEventsResult;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
@@ -32,9 +31,9 @@ import java.util.function.Supplier;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.doReturn;
@@ -43,7 +42,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DefaultEcsClientTest
 {
     @Mock
@@ -59,9 +57,10 @@ public class DefaultEcsClientTest
 
     private DefaultEcsClient ecsClient;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
+        MockitoAnnotations.initMocks(this);
         ecsClient = spy(new DefaultEcsClient(ecsClientConfig, rawEcsClient, logs, 10, 2, 1, 5, 1));
     }
 

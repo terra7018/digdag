@@ -3,7 +3,7 @@ package io.digdag.standards.scheduler;
 import com.google.common.base.Optional;
 import io.digdag.spi.ScheduleTime;
 import io.digdag.spi.Scheduler;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.ZoneId;

@@ -5,8 +5,8 @@ import io.digdag.standards.operator.jdbc.JdbcResultSet;
 import io.digdag.standards.operator.jdbc.LockConflictException;
 import io.digdag.standards.operator.jdbc.NotReadOnlyException;
 import io.digdag.standards.operator.jdbc.TransactionHelper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -39,7 +39,7 @@ public class PgConnectionTest
     private PgConnectionConfig pgConnectionConfig;
     private PgConnection pgConnection;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws SQLException
     {

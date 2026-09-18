@@ -32,11 +32,10 @@ import io.fabric8.kubernetes.api.model.VolumeMountBuilder;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.PodResource;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +45,7 @@ import java.util.List;
 import static io.digdag.client.config.ConfigUtils.newConfig;
 import static io.digdag.core.workflow.OperatorTestingUtils.newTaskRequest;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
@@ -55,7 +54,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DefaultKubernetesClientTest
 {
 
@@ -71,10 +69,11 @@ public class DefaultKubernetesClientTest
     @Mock private MixedOperation<io.fabric8.kubernetes.api.model.Pod, PodList, PodResource<io.fabric8.kubernetes.api.model.Pod>> pods;
     @Mock private NonNamespaceOperation<io.fabric8.kubernetes.api.model.Pod, PodList, PodResource<io.fabric8.kubernetes.api.model.Pod>> namespace;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
+        MockitoAnnotations.initMocks(this);
         kubernetesClientConfig = mock(KubernetesClientConfig.class);
         k8sDefaultKubernetesClient =  mock(io.fabric8.kubernetes.client.DefaultKubernetesClient.class);
         commandContext = mock(CommandContext.class);
