@@ -1,16 +1,12 @@
 package io.digdag.client.api;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class IdTest
 {
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     @Test
     public void testAsIntAndLong()
             throws Exception
@@ -24,15 +20,13 @@ public class IdTest
     public void testIntOverflow()
             throws Exception
     {
-        exception.expect(NumberFormatException.class);
-        Id.of("2147483648").asInt();
+        assertThrows(NumberFormatException.class, () -> Id.of("2147483648").asInt());
     }
 
     @Test
     public void testLongOverflow()
             throws Exception
     {
-        exception.expect(NumberFormatException.class);
-        Id.of("-9223372036854775809").asLong();
+        assertThrows(NumberFormatException.class, () -> Id.of("-9223372036854775809").asLong());
     }
 }
