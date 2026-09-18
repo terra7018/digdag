@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static io.digdag.client.config.ConfigUtils.newConfig;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

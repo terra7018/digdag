@@ -12,9 +12,9 @@ import okhttp3.mockwebserver.QueueDispatcher;
 import okhttp3.mockwebserver.RecordedRequest;
 import okhttp3.tls.HandshakeCertificates;
 import org.bouncycastle.util.io.Streams;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.ws.rs.InternalServerErrorException;
@@ -36,9 +36,9 @@ import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static okhttp3.tls.internal.TlsUtil.localhost;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DigdagClientTest
 {
@@ -46,7 +46,7 @@ public class DigdagClientTest
     private DigdagClient client;
     private ObjectMapper objectMapper;
 
-    @Before
+    @BeforeEach
     public void setUp()
             throws Exception
     {
@@ -66,7 +66,7 @@ public class DigdagClientTest
         objectMapper = DigdagClient.objectMapper();
     }
 
-    @After
+    @AfterEach
     public void tearDown()
             throws Exception
     {
